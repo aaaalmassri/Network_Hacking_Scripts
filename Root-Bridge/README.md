@@ -1,36 +1,39 @@
--> STP-Root Bridge Attack :
+# Fake Spanning Tree Protocol (STP) Root Bridge Attack
 
-  - Capture STP packet phase :
-  .1. Capture STP packet using scapy.all.sniff(filter="CaptureFilter",count="Packet.No", store=False | True, prn="Function") .
+Author: Abdelrahman Adel
+Date: 2022
 
-   .1.1 Capturing idea is for get the STP-Packet information (Bridge-Port, Port-Cost, Port-ID, Fake BPDU) .
+## Overview
 
-   - sniffed_pkt = scapy.all.sniff(filter="ether dst 01:80:c2:00:00:00",count=1)
+The Fake Spanning Tree Protocol (STP) Root Bridge Attack script is a Python tool designed to impersonate the root bridge of a network by sending fake STP Bridge Protocol Data Units (BPDU) packets. This attack can potentially disrupt network operations and cause network convergence problems. 
 
+The script uses the Scapy library to sniff, modify, and send STP packets. It's essential to use this script responsibly and for educational purposes only to understand STP attacks and how to defend against them.
 
-  - Change Packet Information :
-  .2. sniffed_pkt[0].src = "00:00:00:00:00:01" : Change source MAC address of the frame "Which is my mac address" to this MAC address, to set it as the lowest mac address in the network to be able to set my device as the Root-Bridge of the network .
+## Motivation
 
-  .3. sniffed_pkt[0].rootid = 0 : Set Root-ID to zero, Root-ID is the BPDU (Bridge-ID(BPDU Number).MAC Address of the Root-Bridge), which mean this root id will be the lowest and the Root-Bridge will be changed to be for the device with this Root-ID .
+As Abraham Lincoln once said, "The best way to predict the future is to create it." This script serves as an educational tool to create awareness of STP vulnerabilities and the importance of securing network protocols. Understanding the risks involved in STP attacks can help network administrators and security professionals better protect their networks.
 
-  .4. sniffed_pkt[0].rootmac = "00:00:00:00:00:01" : Set Root-MAC to "00:00:00:00:00:01" which is the default for the system-id (MAC address) for the root-bridge in the STP and RSTP , Change the MAC of the Root-Bridge to be the lowest also .
+## Usage
 
-  .5. sniffed_pkt[0].bridgeid = 0 : Set Bridge-ID to zero, which mean the Bridge-ID And Root-ID when equal each other this is the Root-Bridge information .
+To use the Fake STP Root Bridge Attack script, follow these steps:
 
-  .6. sniffed_pkt[0].bridgemac = "00:00:00:00:00:01" : Set Root-MAC = Bridge-MAC, which mean this is the Root-Bridge node .
+1. Ensure you have the Scapy library installed. You can install it using pip:
 
-  .7. sniffed_pkt[0].show() : Show frame content .
-
-  - Start Attack :
-   - Send changed frame back into the network using scapy.all.sendp(packet, loop=0, verbose=True | False)
-
-   .1. sendp(sniffed_pkt[0], loop=0, verbose=True) .
+pip install scapy OR python3 -m pip install scapy 
 
 
-  - Security solution for this attack is (Root-Guard) in any port i don't trust .
-   .1. Set guard to Root-Bridge .
-   .2. This Root-Guard will block the forged-BPDU's .
+2. Review the script to understand its purpose and potential impact.
 
-  - Idea of this attack is capture a frame contain the original information for the Root-Bridge then forged it in the packet then resend it to the network to Spoof the Root-Bridge information and position .
+3. Run the script with caution, as it can disrupt network operations. Ensure that you have appropriate authorization and are conducting this operation in a controlled and authorized environment.
 
+4. Use this script exclusively for educational purposes to study STP attacks and defense mechanisms.
 
+## License
+
+This script is provided under the MIT license, allowing you to use and modify it freely. However, it should be used responsibly and ethically. Unauthorized use of this script for malicious purposes is strictly prohibited.
+
+## Note
+
+Please use this script responsibly and only in controlled, authorized environments. Unauthorized or malicious use of this script can have legal and ethical consequences. Ensure that you follow ethical guidelines and relevant laws when using it.
+
+Happy learning and stay secure in the world of network operations and cybersecurity.
