@@ -19,7 +19,7 @@ To use the Network DOS Attack with DTP Exploitation script, follow these steps:
 
 2. Ensure you have the required Python packages installed. You can install them using pip:
 
-   @pip install scapy OR python3 -m pip install scapy
+    pip install scapy OR python3 -m pip install scapy
 
 
 3. Customize the script to target your specific network or test environment.
